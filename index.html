@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Paper Maze is a quick multiplayer maze race drawn like a page from a notebook.">
+  <meta name="theme-color" content="#f7f2e6">
+  <title>Paper Maze — Race friends through hand-drawn mazes</title>
+  <link rel="icon" type="image/png" href="assets/app-icon.png">
+  <style>
+    @font-face {
+      font-family: "Neucha";
+      src: url("assets/Neucha.ttf") format("truetype");
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f7f2e6;
+      --paper-deep: #eee6d4;
+      --ink: #17375f;
+      --ink-soft: #526071;
+      --red: #e25134;
+      --green: #5a9b67;
+      --blue-line: rgba(88, 139, 178, 0.18);
+      --red-line: rgba(214, 83, 66, 0.42);
+      --white: #fffdf7;
+      --shadow: 0 24px 60px rgba(39, 49, 61, 0.14);
+      --font-hand: "Neucha", "Segoe Print", cursive;
+      --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 33px,
+        var(--blue-line) 34px,
+        transparent 35px
+      );
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      left: max(28px, calc((100vw - 1220px) / 2));
+      width: 2px;
+      content: "";
+      background: var(--red-line);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--red);
+      outline-offset: 4px;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(23, 55, 95, 0.18);
+      border-radius: 12px;
+      box-shadow: 2px 3px 0 rgba(23, 55, 95, 0.14);
+    }
+
+    .brand span {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-size: 14px;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    .nav-cta {
+      padding: 9px 17px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      box-shadow: 3px 3px 0 var(--ink);
+      background: var(--white);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .nav-cta:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    .hero {
+      display: grid;
+      min-height: 690px;
+      align-items: center;
+      grid-template-columns: minmax(0, 1.03fr) minmax(390px, 0.97fr);
+      gap: clamp(32px, 7vw, 90px);
+      padding-block: 54px 92px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 22px;
+      padding: 7px 13px;
+      border: 1px solid rgba(23, 55, 95, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 253, 247, 0.72);
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(90, 155, 103, 0.15);
+      content: "";
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--font-hand);
+      font-weight: 400;
+      line-height: 1.03;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin-bottom: 24px;
+      font-size: clamp(58px, 7vw, 92px);
+      letter-spacing: -0.03em;
+    }
+
+    .scribble {
+      position: relative;
+      display: inline-block;
+      color: var(--red);
+      white-space: nowrap;
+    }
+
+    .scribble::after {
+      position: absolute;
+      right: -2%;
+      bottom: 2px;
+      left: -2%;
+      height: 8px;
+      border-top: 3px solid currentColor;
+      border-radius: 50%;
+      content: "";
+      transform: rotate(-1deg);
+    }
+
+    .hero-copy {
+      max-width: 590px;
+      margin-bottom: 31px;
+      color: var(--ink-soft);
+      font-size: clamp(18px, 2vw, 21px);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border: 2px solid var(--ink);
+      border-radius: 9px 12px 8px 11px;
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .button-primary {
+      box-shadow: 5px 5px 0 var(--red);
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .button-secondary {
+      background: rgba(255, 253, 247, 0.62);
+    }
+
+    .button:hover {
+      transform: translateY(-2px) rotate(-0.4deg);
+    }
+
+    .button-primary:hover {
+      box-shadow: 7px 7px 0 var(--red);
+    }
+
+    .button-secondary:hover {
+      background: var(--white);
+    }
+
+    .hero-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      margin-top: 30px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-facts span::before {
+      margin-right: 8px;
+      color: var(--red);
+      content: "✦";
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 610px;
+      isolation: isolate;
+    }
+
+    .hero-art::before {
+      position: absolute;
+      z-index: -2;
+      top: 4%;
+      right: -3%;
+      width: 92%;
+      aspect-ratio: 1;
+      border: 3px solid rgba(23, 55, 95, 0.15);
+      border-radius: 48% 52% 46% 54%;
+      background: rgba(255, 253, 247, 0.58);
+      content: "";
+      transform: rotate(5deg);
+    }
+
+    .phone {
+      position: absolute;
+      width: min(330px, 71%);
+      filter: drop-shadow(0 24px 22px rgba(26, 41, 58, 0.18));
+    }
+
+    .phone-main {
+      z-index: 2;
+      top: 4px;
+      right: 3%;
+      transform: rotate(3deg);
+    }
+
+    .phone-back {
+      z-index: 1;
+      top: 100px;
+      left: -3%;
+      width: min(265px, 57%);
+      opacity: 0.92;
+      transform: rotate(-7deg);
+    }
+
+    .doodle-maze {
+      position: absolute;
+      z-index: 3;
+      top: -18px;
+      left: 1%;
+      width: 130px;
+      transform: rotate(-10deg);
+      mix-blend-mode: multiply;
+    }
+
+    .race-note {
+      position: absolute;
+      z-index: 4;
+      right: -12px;
+      bottom: 38px;
+      width: 230px;
+      padding: 17px 19px 15px;
+      border: 1px solid rgba(23, 55, 95, 0.22);
+      box-shadow: 8px 10px 0 rgba(23, 55, 95, 0.09);
+      background: #fff9a8;
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 25px;
+      line-height: 1.15;
+      transform: rotate(-3deg);
+    }
+
+    .race-note strong {
+      display: block;
+      color: var(--red);
+      font-size: 40px;
+      font-weight: 400;
+    }
+
+    .marquee {
+      overflow: hidden;
+      border-block: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      transform: rotate(-0.4deg) scale(1.01);
+    }
+
+    .marquee-inner {
+      display: flex;
+      width: max-content;
+      gap: 34px;
+      align-items: center;
+      padding: 13px 0;
+      font-family: var(--font-hand);
+      font-size: 24px;
+      letter-spacing: 0.03em;
+    }
+
+    .marquee-inner span::after {
+      margin-left: 34px;
+      color: #ffb39c;
+      content: "✦";
+    }
+
+    section {
+      padding-block: 112px;
+    }
+
+    .section-kicker {
+      margin-bottom: 10px;
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      max-width: 720px;
+      margin-bottom: 18px;
+      font-size: clamp(44px, 5vw, 66px);
+    }
+
+    .section-lead {
+      max-width: 630px;
+      margin-bottom: 50px;
+      color: var(--ink-soft);
+      font-size: 19px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .step {
+      position: relative;
+      min-height: 270px;
+      padding: 32px 30px 30px;
+      border: 2px solid var(--ink);
+      border-radius: 11px 15px 10px 14px;
+      box-shadow: 7px 8px 0 rgba(23, 55, 95, 0.13);
+      background: rgba(255, 253, 247, 0.84);
+    }
+
+    .step:nth-child(2) {
+      transform: translateY(20px) rotate(0.7deg);
+    }
+
+    .step:nth-child(3) {
+      transform: rotate(-0.8deg);
+    }
+
+    .step-number {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      margin-bottom: 28px;
+      place-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--red);
+      font-family: var(--font-hand);
+      font-size: 31px;
+      transform: rotate(-5deg);
+    }
+
+    .step h3 {
+      margin-bottom: 12px;
+      font-size: 34px;
+    }
+
+    .step p {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+    }
+
+    .screens-section {
+      position: relative;
+      overflow: hidden;
+      border-block: 1px solid rgba(23, 55, 95, 0.16);
+      background: rgba(233, 225, 206, 0.62);
+    }
+
+    .screens-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .screens-header .section-lead {
+      max-width: 410px;
+    }
+
+    .screens {
+      display: grid;
+      align-items: end;
+      margin-top: 26px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px, 3vw, 34px);
+    }
+
+    .screen-card {
+      position: relative;
+      margin: 0;
+      text-align: center;
+    }
+
+    .screen-card:nth-child(1) {
+      transform: rotate(-2deg) translateY(24px);
+    }
+
+    .screen-card:nth-child(2) {
+      z-index: 2;
+      transform: translateY(-12px);
+    }
+
+    .screen-card:nth-child(3) {
+      transform: rotate(2deg) translateY(24px);
+    }
+
+    .screen-card img {
+      max-height: 680px;
+      margin-inline: auto;
+      filter: drop-shadow(0 26px 24px rgba(32, 41, 52, 0.16));
+    }
+
+    .screen-card figcaption {
+      display: inline-block;
+      margin-top: -12px;
+      padding: 7px 14px;
+      border: 1px solid rgba(23, 55, 95, 0.17);
+      background: var(--white);
+      font-family: var(--font-hand);
+      font-size: 22px;
+      transform: rotate(-1deg);
+    }
+
+    .features {
+      display: grid;
+      align-items: start;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: clamp(50px, 9vw, 120px);
+    }
+
+    .features-copy {
+      position: sticky;
+      top: 44px;
+    }
+
+    .features-copy .section-title {
+      margin-bottom: 24px;
+    }
+
+    .runner {
+      width: 185px;
+      margin: 30px 0 0 auto;
+      mix-blend-mode: multiply;
+      transform: rotate(3deg);
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .feature {
+      display: grid;
+      align-items: start;
+      padding: 25px 26px;
+      border-bottom: 2px solid rgba(23, 55, 95, 0.18);
+      grid-template-columns: 70px 1fr;
+      gap: 8px 20px;
+    }
+
+    .feature-mark {
+      grid-row: 1 / span 2;
+      color: var(--red);
+      font-family: var(--font-hand);
+      font-size: 48px;
+      line-height: 1;
+      transform: rotate(-8deg);
+    }
+
+    .feature h3 {
+      margin-bottom: 8px;
+      font-size: 31px;
+    }
+
+    .feature p {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+    }
+
+    .final-cta {
+      padding-top: 38px;
+      padding-bottom: 100px;
+    }
+
+    .cta-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(44px, 7vw, 82px);
+      border: 3px solid var(--ink);
+      border-radius: 22px 16px 24px 18px;
+      box-shadow: 11px 12px 0 var(--red);
+      background: var(--ink);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .cta-card::before,
+    .cta-card::after {
+      position: absolute;
+      border: 2px solid rgba(255, 255, 255, 0.11);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .cta-card::before {
+      top: -130px;
+      right: -50px;
+      width: 330px;
+      height: 330px;
+    }
+
+    .cta-card::after {
+      bottom: -170px;
+      left: -100px;
+      width: 380px;
+      height: 380px;
+    }
+
+    .cta-card h2 {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto 20px;
+      font-size: clamp(50px, 6vw, 78px);
+    }
+
+    .cta-card p {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto 30px;
+      color: rgba(255, 253, 247, 0.72);
+      font-size: 18px;
+    }
+
+    .cta-card .button {
+      position: relative;
+      z-index: 1;
+      border-color: var(--white);
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: 5px 5px 0 var(--red);
+    }
+
+    footer {
+      border-top: 1px solid rgba(23, 55, 95, 0.18);
+      background: rgba(247, 242, 230, 0.8);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding-block: 28px;
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links a:hover {
+      color: var(--red);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        max-width: 680px;
+      }
+
+      .hero-art {
+        width: min(560px, 100%);
+        margin-inline: auto;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .step,
+      .step:nth-child(2),
+      .step:nth-child(3) {
+        min-height: auto;
+        transform: none;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .features-copy {
+        position: static;
+      }
+
+      .runner {
+        display: none;
+      }
+    }
+
+    @media (max-width: 680px) {
+      body::before {
+        left: 18px;
+      }
+
+      .wrap {
+        width: min(100% - 36px, 1180px);
+      }
+
+      .nav-links a:not(.nav-cta) {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-block: 38px 72px;
+      }
+
+      h1 {
+        font-size: clamp(54px, 17vw, 74px);
+      }
+
+      .hero-art {
+        min-height: 500px;
+      }
+
+      .phone-main {
+        right: -1%;
+      }
+
+      .phone-back {
+        left: -2%;
+      }
+
+      .doodle-maze {
+        width: 95px;
+      }
+
+      .race-note {
+        right: 0;
+        bottom: 3px;
+        width: 190px;
+        font-size: 21px;
+      }
+
+      section {
+        padding-block: 80px;
+      }
+
+      .screens-header {
+        display: block;
+      }
+
+      .screens {
+        overflow-x: auto;
+        align-items: start;
+        margin-inline: -18px;
+        padding: 24px 18px 38px;
+        grid-template-columns: repeat(3, minmax(245px, 72vw));
+        scroll-snap-type: x mandatory;
+      }
+
+      .screen-card,
+      .screen-card:nth-child(1),
+      .screen-card:nth-child(2),
+      .screen-card:nth-child(3) {
+        scroll-snap-align: center;
+        transform: none;
+      }
+
+      .feature {
+        padding-inline: 6px;
+        grid-template-columns: 50px 1fr;
+        gap: 8px 12px;
+      }
+
+      .feature-mark {
+        font-size: 38px;
+      }
+
+      .cta-card {
+        box-shadow: 7px 8px 0 var(--red);
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Paper Maze home">
+        <img src="assets/app-icon.png" alt="">
+        <span>Paper Maze</span>
+      </a>
+      <div class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#gameplay">Gameplay</a>
+        <a class="nav-cta" href="legal/privacy-policy.html">Privacy</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <p class="eyebrow">Coming soon to Android</p>
+        <h1>A tiny maze.<br>A <span class="scribble">very real</span> race.</h1>
+        <p class="hero-copy">Create a room, share the code, and race your friends through a hand-drawn maze. First one to find the way out wins.</p>
+        <div class="actions">
+          <a class="button button-primary" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+          <a class="button button-secondary" href="mailto:papermazeapp@gmail.com">Get launch updates</a>
+        </div>
+        <div class="hero-facts" aria-label="Game highlights">
+          <span>2–10 players</span>
+          <span>Quick room codes</span>
+          <span>Fresh mazes every race</span>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-label="Paper Maze game screens">
+        <img class="doodle-maze" src="assets/doodle-maze.png" alt="" aria-hidden="true">
+        <img class="phone phone-back" src="assets/screen-home.png" alt="Paper Maze home screen">
+        <img class="phone phone-main" src="assets/screen-match.png" alt="A live race through a hand-drawn maze">
+        <aside class="race-note" aria-label="Game objective"><strong>Ready?</strong> Find the exit before they do.</aside>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-inner">
+        <span>Create a room</span><span>Share the code</span><span>Ready up</span><span>Race to the exit</span><span>Create a room</span><span>Share the code</span><span>Ready up</span><span>Race to the exit</span>
+      </div>
+    </div>
+
+    <section id="how-it-works" class="wrap">
+      <p class="section-kicker">No long setup. No rulebook.</p>
+      <h2 class="section-title">From group chat to starting line in three steps.</h2>
+      <p class="section-lead">Paper Maze turns the familiar pen-and-paper puzzle into a quick live race anyone can understand.</p>
+      <div class="steps">
+        <article class="step">
+          <div class="step-number">1</div>
+          <h3>Make a room</h3>
+          <p>Pick your goal: escape through the exit or be the first to reach the center.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">2</div>
+          <h3>Send the code</h3>
+          <p>Friends join with a short room code. No complicated party setup required.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">3</div>
+          <h3>Race!</h3>
+          <p>Swipe your marker through the maze and find the path before everybody else.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="gameplay" class="screens-section">
+      <div class="wrap">
+        <div class="screens-header">
+          <div>
+            <p class="section-kicker">Looks like paper. Plays like a race.</p>
+            <h2 class="section-title">A notebook full of friendly trouble.</h2>
+          </div>
+          <p class="section-lead">Lined pages, pencil shading and ink-like walls give every match a handmade feel.</p>
+        </div>
+        <div class="screens">
+          <figure class="screen-card">
+            <img src="assets/screen-join.png" alt="Join a Paper Maze room with a code" loading="lazy">
+            <figcaption>Join with a code</figcaption>
+          </figure>
+          <figure class="screen-card">
+            <img src="assets/screen-match.png" alt="Race through the maze in real time" loading="lazy">
+            <figcaption>Spot the path</figcaption>
+          </figure>
+          <figure class="screen-card">
+            <img src="assets/screen-lobby.png" alt="Paper Maze lobby before a match" loading="lazy">
+            <figcaption>Ready up together</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap features">
+      <div class="features-copy">
+        <p class="section-kicker">Small game. Smart details.</p>
+        <h2 class="section-title">Built for the rematch.</h2>
+        <p class="section-lead">Every part of Paper Maze keeps the fun quick, fair and easy to share.</p>
+        <img class="runner" src="assets/doodle-runner.png" alt="" aria-hidden="true" loading="lazy">
+      </div>
+      <div class="feature-list">
+        <article class="feature">
+          <div class="feature-mark" aria-hidden="true">2–10</div>
+          <h3>Bring the whole group</h3>
+          <p>Race one friend or fill the lobby with up to ten players.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-mark" aria-hidden="true">∞</div>
+          <h3>A new maze every time</h3>
+          <p>Generated layouts keep the answer from becoming obvious on the next run.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-mark" aria-hidden="true">✓</div>
+          <h3>Fair from start to finish</h3>
+          <p>The game server validates movement, timing and results for every player.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-mark" aria-hidden="true">A</div>
+          <h3>Play in your language</h3>
+          <p>Paper Maze speaks English, Ukrainian and Russian.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap final-cta">
+      <div class="cta-card">
+        <h2>Ready to get a little lost?</h2>
+        <p>Paper Maze is heading to Android. Send us a note to hear when the starting line opens.</p>
+        <a class="button" href="mailto:papermazeapp@gmail.com">papermazeapp@gmail.com</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© 2026 Paper Maze. Made with paper, ink and friendly rivalry.</span>
+      <div class="footer-links">
+        <a href="legal/privacy-policy.html">Privacy Policy</a>
+        <a href="mailto:papermazeapp@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
