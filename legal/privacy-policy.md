@@ -1,6 +1,6 @@
 # Privacy Policy for Paper Maze
 
-**Last updated:** August 5, 2026
+**Last updated:** August 16, 2026
 
 Paper Maze is a mobile multiplayer maze racing game. This Privacy Policy explains what information the app collects, how it is used, and how to contact us.
 
@@ -74,7 +74,7 @@ Paper Maze keeps account, profile, and match history information for as long as 
 
 Server logs are kept only as long as reasonably needed for operations, debugging, and security.
 
-You can request deletion of your Paper Maze profile data by contacting **papermazeapp@gmail.com**.
+You can permanently delete your guest account and its associated profile and gameplay data in the app under **Settings → Account → Delete player account**. If you no longer have access to the app, submit a request through the [Paper Maze account deletion page](../delete-account.html).
 
 ## Children
 
@@ -94,6 +94,8 @@ We may update this Privacy Policy when the app, backend, legal requirements, or 
 
 ## Contact
 
-For privacy questions, support, or data deletion requests, contact:
+For privacy questions or support, contact:
 
 **papermazeapp@gmail.com**
+
+For account deletion, use the in-app control or the [account deletion page](../delete-account.html).

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -38,6 +38,7 @@
 
     body {
       margin: 0;
+      overflow-x: clip;
       color: var(--ink);
       background-color: var(--paper);
       background-image: repeating-linear-gradient(
@@ -57,7 +58,7 @@
       z-index: -1;
       top: 0;
       bottom: 0;
-      left: max(28px, calc((100vw - 1060px) / 2));
+      left: max(28px, calc((100vw - 1220px) / 2));
       width: 2px;
       content: "";
       background: var(--red-line);
@@ -74,7 +75,7 @@
     }
 
     .wrap {
-      width: min(1020px, calc(100% - 48px));
+      width: min(1180px, calc(100% - 48px));
       margin-inline: auto;
     }
 
@@ -453,7 +454,7 @@
       }
 
       .wrap {
-        width: min(100% - 36px, 1020px);
+        width: min(100% - 36px, 1180px);
       }
 
       .nav-links a:not(.nav-cta) {
@@ -508,6 +509,7 @@
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="legal/privacy-policy.html">Privacy</a>
+        <a href="delete-account.html">Delete account</a>
         <a class="nav-cta" href="mailto:papermazeapp@gmail.com?subject=Paper%20Maze%20Support">Email us</a>
       </div>
     </nav>
@@ -578,9 +580,9 @@
             </div>
           </details>
           <details>
-            <summary>How do I request deletion of my player data?</summary>
+            <summary>How do I delete my player account and data?</summary>
             <div class="answer">
-              <p>Email <a href="mailto:papermazeapp@gmail.com?subject=Paper%20Maze%20Data%20Deletion">papermazeapp@gmail.com</a> with the subject “Paper Maze Data Deletion.” We may ask for information needed to locate and verify the correct player profile.</p>
+              <p>Open Paper Maze, go to <strong>Settings → Account</strong>, and tap <strong>Delete player account</strong>. This permanently deletes the guest account and its associated game data. If you no longer have the app, use our <a href="delete-account.html">account deletion page</a> to submit a request.</p>
             </div>
           </details>
           <details>
@@ -607,6 +609,7 @@
       <span>© 2026 Paper Maze. Made with paper, ink and friendly rivalry.</span>
       <div class="footer-links">
         <a href="index.html">Home</a>
+        <a href="delete-account.html">Delete Account</a>
         <a href="legal/privacy-policy.html">Privacy Policy</a>
         <a href="mailto:papermazeapp@gmail.com">Contact</a>
       </div>

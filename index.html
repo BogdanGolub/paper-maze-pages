@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -39,6 +39,7 @@
 
     body {
       margin: 0;
+      overflow-x: clip;
       color: var(--ink);
       background-color: var(--paper);
       background-image: repeating-linear-gradient(
@@ -58,7 +59,7 @@
       z-index: -1;
       top: 0;
       bottom: 0;
-      left: max(28px, calc((100vw - 1220px) / 2));
+      left: max(28px, calc((100vw - 1360px) / 2));
       width: 2px;
       content: "";
       background: var(--red-line);
@@ -79,7 +80,7 @@
     }
 
     .wrap {
-      width: min(1180px, calc(100% - 48px));
+      width: min(1320px, calc(100% - 48px));
       margin-inline: auto;
     }
 
@@ -271,12 +272,15 @@
       flex-wrap: wrap;
       gap: 12px 24px;
       margin-top: 30px;
+      margin-bottom: 0;
+      padding: 0;
       color: var(--ink-soft);
       font-size: 13px;
       font-weight: 700;
+      list-style: none;
     }
 
-    .hero-facts span::before {
+    .hero-facts li::before {
       margin-right: 8px;
       color: var(--red);
       content: "✦";
@@ -359,19 +363,20 @@
     }
 
     .marquee {
-      overflow: hidden;
+      overflow: clip;
       border-block: 2px solid var(--ink);
       background: var(--ink);
       color: var(--paper);
-      transform: rotate(-0.4deg) scale(1.01);
     }
 
     .marquee-inner {
       display: flex;
       width: max-content;
-      gap: 34px;
+      min-width: 100%;
       align-items: center;
-      padding: 13px 0;
+      justify-content: space-around;
+      gap: clamp(30px, 3vw, 70px);
+      padding: 13px clamp(24px, 3vw, 72px);
       font-family: var(--font-hand);
       font-size: 24px;
       letter-spacing: 0.03em;
@@ -381,6 +386,10 @@
       margin-left: 34px;
       color: #ffb39c;
       content: "✦";
+    }
+
+    .marquee-inner span {
+      white-space: nowrap;
     }
 
     section {
@@ -710,7 +719,7 @@
       }
 
       .wrap {
-        width: min(100% - 36px, 1180px);
+        width: min(100% - 36px, 1320px);
       }
 
       .nav-links a:not(.nav-cta) {
@@ -755,6 +764,20 @@
 
       .screens-header {
         display: block;
+      }
+
+      .marquee-inner {
+        justify-content: space-between;
+        gap: 16px;
+        padding-inline: 14px;
+      }
+
+      .marquee-inner span:nth-child(n + 3) {
+        display: none;
+      }
+
+      .marquee-inner span::after {
+        margin-left: 16px;
       }
 
       .screens {
@@ -833,14 +856,14 @@
           <a class="button button-primary" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
           <a class="button button-secondary" href="mailto:papermazeapp@gmail.com">Get launch updates</a>
         </div>
-        <div class="hero-facts" aria-label="Game highlights">
-          <span>2–10 players</span>
-          <span>Quick room codes</span>
-          <span>Fresh mazes every race</span>
-        </div>
+        <ul class="hero-facts">
+          <li>2–10 players</li>
+          <li>Quick room codes</li>
+          <li>Fresh mazes every race</li>
+        </ul>
       </div>
 
-      <div class="hero-art" aria-label="Paper Maze game screens">
+      <div class="hero-art" role="group" aria-label="Paper Maze game screens">
         <img class="doodle-maze" src="assets/doodle-maze.png" alt="" aria-hidden="true">
         <img class="phone phone-back" src="assets/screen-home.png" alt="Paper Maze home screen">
         <img class="phone phone-main" src="assets/screen-match.png" alt="A live race through a hand-drawn maze">
@@ -848,9 +871,9 @@
       </div>
     </div>
 
-    <div class="marquee" aria-hidden="true">
+    <div class="wrap marquee" aria-hidden="true">
       <div class="marquee-inner">
-        <span>Create a room</span><span>Share the code</span><span>Ready up</span><span>Race to the exit</span><span>Create a room</span><span>Share the code</span><span>Ready up</span><span>Race to the exit</span>
+        <span>Create a room</span><span>Share the code</span><span>Ready up</span><span>Race to the exit</span>
       </div>
     </div>
 
@@ -948,6 +971,7 @@
       <span>© 2026 Paper Maze. Made with paper, ink and friendly rivalry.</span>
       <div class="footer-links">
         <a href="support.html">Support</a>
+        <a href="delete-account.html">Delete Account</a>
         <a href="legal/privacy-policy.html">Privacy Policy</a>
         <a href="mailto:papermazeapp@gmail.com">Contact</a>
       </div>
