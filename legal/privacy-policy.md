@@ -1,10 +1,16 @@
 # Privacy Policy for Paper Maze
 
-**Last updated:** August 16, 2026
+**Last updated:** August 26, 2026
 
 Paper Maze is a mobile multiplayer maze racing game. This Privacy Policy explains what information the app collects, how it is used, and how to contact us.
 
 If you have questions, contact us at **papermazeapp@gmail.com**.
+
+## Your Choice Before Online Play
+
+Before Paper Maze creates a guest account or connects to the production server, the app shows a summary of the data processing described below and provides access to this policy. If you choose **Agree and continue**, the app stores that choice locally and starts the online sign-in flow. If you choose **Not now**, Paper Maze does not create an account or connect to the game server.
+
+After creating an account, you can withdraw this choice by deleting the account under **Settings → Account → Delete player account**. Deletion also resets the locally stored privacy choice, so a new account cannot be created until you agree again.
 
 ## Information We Collect
 
@@ -16,7 +22,7 @@ Paper Maze may collect:
 
 - A device-based player identifier used to sign in to the game.
 - Your display name.
-- Your game profile, including match count, wins, losses, best time, and recent match history.
+- Your game profile, including match count, wins, losses, best time, and up to 10 recent match-history entries.
 - Language or app settings selected in the app.
 
 ### Multiplayer and Gameplay Information
@@ -58,7 +64,9 @@ Paper Maze does not sell personal information.
 
 Paper Maze may share limited gameplay information with other players in the same match, such as your display name, player marker, ready status, connection status, position, and match result.
 
-Paper Maze may use backend infrastructure providers to operate the game server and database. These providers process information only as needed to provide the game service.
+The production Nakama game server and database are self-managed on infrastructure provided by **Hetzner Online GmbH**. Hetzner may process hosting, storage, and network information only as needed to provide and secure that infrastructure.
+
+Any service provider that processes information for Paper Maze must use it only for the contracted service, apply safeguards consistent with this policy and applicable law, and provide the same or an equivalent level of protection. We remain responsible for explaining how information is handled by the service.
 
 We may disclose information if required by law, to protect the security of the service, or to investigate abuse.
 
@@ -66,13 +74,13 @@ We may disclose information if required by law, to protect the security of the s
 
 The current version of Paper Maze does not include third-party advertising SDKs, third-party analytics SDKs, or in-app purchases.
 
-If this changes, this Privacy Policy and the Google Play Data Safety information will be updated before release.
+If this changes, this Privacy Policy, the App Store privacy details, and the Google Play Data Safety information will be updated before release.
 
 ## Data Retention
 
-Paper Maze keeps account, profile, and match history information for as long as needed to provide the game service, maintain player stats, prevent abuse, and diagnose issues.
+Paper Maze keeps your guest account and profile until you delete them. Saved match history is limited to the 10 most recent entries; older entries are replaced as new matches finish. Active match state is held while a match is running and is discarded when the match ends or the server cleans it up.
 
-Server logs are kept only as long as reasonably needed for operations, debugging, and security.
+Operational server logs rotate within bounded storage limits, so their exact retention period varies with server activity. Records isolated for a specific reliability, security, or abuse incident may be kept until that incident is resolved, or longer when required by law.
 
 You can permanently delete your guest account and its associated profile and gameplay data in the app under **Settings → Account → Delete player account**. If you no longer have access to the app, submit a request through the [Paper Maze account deletion page](../delete-account.html).
 
