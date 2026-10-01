@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Paper Maze is a quick multiplayer maze race drawn like a page from a notebook.">
-  <meta name="theme-color" content="#f7f2e6">
+  <meta name="description" content="Race friends through hand-drawn notebook mazes. Play Daily Maze, dodge ink and choose your character, trail, paper and effects.">
+  <meta name="theme-color" content="#f8f8ef">
+  <meta property="og:title" content="Paper Maze — Find your way. Beat your friends.">
+  <meta property="og:description" content="Live maze races for 2–10 players, a fresh daily challenge and your own doodle style.">
+  <meta property="og:image" content="https://bogdangolub.github.io/paper-maze-pages/assets/social-card.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Paper Maze — Race friends through hand-drawn mazes</title>
   <link rel="icon" type="image/png" href="assets/app-icon.png">
   <style>
@@ -14,16 +19,23 @@
       font-display: swap;
     }
 
+    @font-face {
+      font-family: "Caveat";
+      src: url("assets/Caveat.ttf") format("truetype");
+      font-weight: 400 700;
+      font-display: swap;
+    }
+
     :root {
-      --paper: #f7f2e6;
+      --paper: #f8f8ef;
       --paper-deep: #eee6d4;
-      --ink: #17375f;
-      --ink-soft: #526071;
-      --red: #e25134;
-      --green: #5a9b67;
+      --ink: #091e51;
+      --ink-soft: #607694;
+      --red: #ed1829;
+      --green: #3f8f5e;
       --blue-line: rgba(88, 139, 178, 0.18);
       --red-line: rgba(214, 83, 66, 0.42);
-      --white: #fffdf7;
+      --white: #fdfbf4;
       --shadow: 0 24px 60px rgba(39, 49, 61, 0.14);
       --font-hand: "Neucha", "Segoe Print", cursive;
       --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -68,6 +80,7 @@
     img {
       display: block;
       max-width: 100%;
+      height: auto;
     }
 
     a {
@@ -187,8 +200,8 @@
     h1,
     h2,
     h3 {
-      font-family: var(--font-hand);
-      font-weight: 400;
+      font-family: "Caveat", var(--font-hand);
+      font-weight: 700;
       line-height: 1.03;
     }
 
@@ -246,8 +259,8 @@
     }
 
     .button-primary {
-      box-shadow: 5px 5px 0 var(--red);
-      background: var(--ink);
+      box-shadow: 4px 5px 0 rgba(9, 30, 81, 0.16);
+      background: var(--red) url("assets/button-scribble.svg") center / cover;
       color: var(--white);
     }
 
@@ -293,23 +306,16 @@
     }
 
     .hero-art::before {
-      position: absolute;
-      z-index: -2;
-      top: 4%;
-      right: -3%;
-      width: 92%;
-      aspect-ratio: 1;
-      border: 3px solid rgba(23, 55, 95, 0.15);
-      border-radius: 48% 52% 46% 54%;
-      background: rgba(255, 253, 247, 0.58);
-      content: "";
-      transform: rotate(5deg);
+      content: none;
     }
 
     .phone {
       position: absolute;
       width: min(330px, 71%);
       filter: drop-shadow(0 24px 22px rgba(26, 41, 58, 0.18));
+      border: 3px solid var(--ink);
+      border-radius: 12px 9px 13px 8px;
+      background: var(--paper);
     }
 
     .phone-main {
@@ -513,14 +519,16 @@
     }
 
     .screen-card img {
-      max-height: 680px;
+      width: min(100%, 380px);
       margin-inline: auto;
       filter: drop-shadow(0 26px 24px rgba(32, 41, 52, 0.16));
+      border: 2px solid var(--ink);
+      border-radius: 8px 11px 7px 9px;
     }
 
     .screen-card figcaption {
       display: inline-block;
-      margin-top: -12px;
+      margin-top: 14px;
       padding: 7px 14px;
       border: 1px solid rgba(23, 55, 95, 0.17);
       background: var(--white);
@@ -534,6 +542,67 @@
       align-items: start;
       grid-template-columns: 0.9fr 1.1fr;
       gap: clamp(50px, 9vw, 120px);
+    }
+
+    .showcase {
+      display: grid;
+      gap: 64px;
+    }
+
+    .showcase-row {
+      display: grid;
+      align-items: center;
+      grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1fr);
+      gap: clamp(32px, 8vw, 110px);
+      padding: clamp(24px, 4vw, 48px);
+      border: 2px solid rgba(9, 30, 81, 0.18);
+      border-radius: 7px 13px 9px 11px;
+      background: var(--white);
+      box-shadow: 5px 7px 0 rgba(9, 30, 81, 0.07);
+    }
+
+    .showcase-row img {
+      width: min(310px, 100%);
+      margin-inline: auto;
+      border: 2px solid var(--ink);
+      border-radius: 9px;
+    }
+
+    .showcase-row h3 {
+      font-size: clamp(38px, 5vw, 58px);
+    }
+
+    .paper-note {
+      display: inline-block;
+      padding: 12px 18px;
+      background: #ffe18a;
+      font-family: var(--font-hand);
+      font-size: 22px;
+      transform: rotate(-1deg);
+    }
+
+    .faq {
+      padding-top: 0;
+    }
+
+    .faq details {
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(9, 30, 81, 0.22);
+      border-radius: 7px 11px 6px 9px;
+      background: var(--white);
+    }
+
+    .faq summary {
+      cursor: pointer;
+      font-family: var(--font-hand);
+      font-size: 25px;
+    }
+
+    .faq details p {
+      max-width: 850px;
+      margin: 16px 0 0;
+      color: var(--ink-soft);
     }
 
     .features-copy {
@@ -596,9 +665,9 @@
       padding: clamp(44px, 7vw, 82px);
       border: 3px solid var(--ink);
       border-radius: 22px 16px 24px 18px;
-      box-shadow: 11px 12px 0 var(--red);
-      background: var(--ink);
-      color: var(--white);
+      box-shadow: 7px 8px 0 rgba(9, 30, 81, 0.12);
+      background: var(--white);
+      color: var(--ink);
       text-align: center;
     }
 
@@ -607,7 +676,7 @@
       position: absolute;
       border: 2px solid rgba(255, 255, 255, 0.11);
       border-radius: 50%;
-      content: "";
+      content: none;
     }
 
     .cta-card::before {
@@ -714,6 +783,14 @@
     }
 
     @media (max-width: 680px) {
+      .showcase-row {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase-row img {
+        width: min(260px, 100%);
+      }
+
       body::before {
         left: 18px;
       }
@@ -838,9 +915,9 @@
         <span>Paper Maze</span>
       </a>
       <div class="nav-links">
-        <a href="#how-it-works">How it works</a>
+        <a href="#how-it-works">How to play</a>
         <a href="#gameplay">Gameplay</a>
-        <a href="legal/privacy-policy.html">Privacy</a>
+        <a href="#daily-and-style">Daily &amp; style</a>
         <a class="nav-cta" href="support.html">Support</a>
       </div>
     </nav>
@@ -849,24 +926,24 @@
   <main id="top">
     <div class="wrap hero">
       <div>
-        <p class="eyebrow">Coming soon to Android</p>
+        <p class="eyebrow">Drawn on paper. Played with friends.</p>
         <h1>A tiny maze.<br>A <span class="scribble">very real</span> race.</h1>
-        <p class="hero-copy">Create a room, share the code, and race your friends through a hand-drawn maze. First one to find the way out wins.</p>
+        <p class="hero-copy">Swipe through ink-drawn corridors, dodge a blot and find the exit before your friends. Then turn the page for a daily challenge or a new doodle look.</p>
         <div class="actions">
-          <a class="button button-primary" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
-          <a class="button button-secondary" href="mailto:papermazeapp@gmail.com">Get launch updates</a>
+          <a class="button button-primary" href="https://apps.apple.com/app/id6796745132">Download on the App Store <span aria-hidden="true">↗</span></a>
+          <a class="button button-secondary" href="#gameplay">See the game <span aria-hidden="true">↓</span></a>
         </div>
         <ul class="hero-facts">
           <li>2–10 players</li>
-          <li>Quick room codes</li>
-          <li>Fresh mazes every race</li>
+          <li>A new Daily Maze</li>
+          <li>Cosmetic-only unlocks</li>
         </ul>
       </div>
 
       <div class="hero-art" role="group" aria-label="Paper Maze game screens">
         <img class="doodle-maze" src="assets/doodle-maze.png" alt="" aria-hidden="true">
-        <img class="phone phone-back" src="assets/screen-home.png" alt="Paper Maze home screen">
-        <img class="phone phone-main" src="assets/screen-match.png" alt="A live race through a hand-drawn maze">
+        <img class="phone phone-back" src="assets/screen-home.webp" width="540" height="960" alt="Paper Maze home screen with Daily Maze and a red Play button">
+        <img class="phone phone-main" src="assets/screen-match.webp" width="540" height="960" fetchpriority="high" alt="A red doodle runner racing through hand-drawn ink corridors">
         <aside class="race-note" aria-label="Game objective"><strong>Ready?</strong> Find the exit before they do.</aside>
       </div>
     </div>
@@ -890,12 +967,12 @@
         <article class="step">
           <div class="step-number">2</div>
           <h3>Send the code</h3>
-          <p>Friends join with a short room code. No complicated party setup required.</p>
+          <p>Friends join with a short room code. Everyone readies up, then the host starts the race.</p>
         </article>
         <article class="step">
           <div class="step-number">3</div>
           <h3>Race!</h3>
-          <p>Swipe your marker through the maze and find the path before everybody else.</p>
+          <p>One swipe takes your runner to the next junction, wall or obstacle. Pick your turn and beat the others to the goal.</p>
         </article>
       </div>
     </section>
@@ -911,19 +988,44 @@
         </div>
         <div class="screens">
           <figure class="screen-card">
-            <img src="assets/screen-join.png" alt="Join a Paper Maze room with a code" loading="lazy">
-            <figcaption>Join with a code</figcaption>
+            <img src="assets/screen-friends.webp" width="540" height="960" alt="Create a room or join friends with a code" loading="lazy">
+            <figcaption>Bring your friends</figcaption>
           </figure>
           <figure class="screen-card">
-            <img src="assets/screen-match.png" alt="Race through the maze in real time" loading="lazy">
+            <img src="assets/screen-match.webp" width="540" height="960" alt="Race through the maze in real time with ink blots and paper holes" loading="lazy">
             <figcaption>Spot the path</figcaption>
           </figure>
           <figure class="screen-card">
-            <img src="assets/screen-lobby.png" alt="Paper Maze lobby before a match" loading="lazy">
+            <img src="assets/screen-lobby.webp" width="540" height="960" alt="Four-player room with ready states and a shared room code" loading="lazy">
             <figcaption>Ready up together</figcaption>
           </figure>
         </div>
       </div>
+    </section>
+
+    <section id="daily-and-style" class="wrap showcase">
+      <div>
+        <p class="section-kicker">Same notebook. New reasons to play.</p>
+        <h2 class="section-title">A fresh page, every day.</h2>
+      </div>
+      <article class="showcase-row">
+        <img src="assets/screen-daily.webp" width="540" height="960" alt="Daily Maze countdown, coin reward and today's leaderboard" loading="lazy">
+        <div>
+          <h3>One maze. Your best time.</h3>
+          <p>Everyone gets the same daily layout. Learn the turns, improve your time and see how your run stacks up on today’s leaderboard.</p>
+          <p class="paper-note">Earn 25 coins for your first daily finish.</p>
+          <p>A new challenge arrives every day. Your fastest finish is the one that counts.</p>
+        </div>
+      </article>
+      <article class="showcase-row">
+        <img src="assets/screen-cosmetics.webp" width="540" height="960" alt="Cap preview and hand-drawn character cards in the cosmetics catalog" loading="lazy">
+        <div>
+          <h3>Your runner. Your scribble.</h3>
+          <p>Try on a cap, headphones or a whole new character. Choose a trail, change the paper and add a finishing effect.</p>
+          <p class="paper-note">A different look. The same racing rules.</p>
+          <p>Preview a style before choosing it. Cosmetic unlocks never change movement speed, obstacles or the result of a race.</p>
+        </div>
+      </article>
     </section>
 
     <section class="wrap features">
@@ -942,12 +1044,12 @@
         <article class="feature">
           <div class="feature-mark" aria-hidden="true">∞</div>
           <h3>A new maze every time</h3>
-          <p>Generated layouts keep the answer from becoming obvious on the next run.</p>
+          <p>Generated layouts keep each race fresh. Bigger groups get bigger mazes, with the same close view of the corridors.</p>
         </article>
         <article class="feature">
-          <div class="feature-mark" aria-hidden="true">✓</div>
-          <h3>Fair from start to finish</h3>
-          <p>The game server validates movement, timing and results for every player.</p>
+          <div class="feature-mark" aria-hidden="true">✦</div>
+          <h3>A little ink in the way</h3>
+          <p>Ink blots, glue and thumbtacks make you think twice. Paper holes and folds can open a different way through.</p>
         </article>
         <article class="feature">
           <div class="feature-mark" aria-hidden="true">A</div>
@@ -957,11 +1059,29 @@
       </div>
     </section>
 
+    <section class="wrap faq" aria-labelledby="faq-title">
+      <p class="section-kicker">A few notes before the starting line.</p>
+      <h2 class="section-title" id="faq-title">How does a race work?</h2>
+      <details>
+        <summary>How many friends can join?</summary>
+        <p>Multiplayer rooms support 2–10 players. Everyone must be ready before the host can press Start match. Daily Maze is a solo timed challenge.</p>
+      </details>
+      <details>
+        <summary>When does the multiplayer race end?</summary>
+        <p>The first player to reach the goal wins and ends the race for the room. A race can also end when only one active player remains or the timer runs out. The result screen shows all players and your completed route.</p>
+      </details>
+      <details>
+        <summary>Can a cosmetic make me faster?</summary>
+        <p>No. Characters, trails, paper and effects change appearance only. They don’t add speed or a gameplay advantage.</p>
+      </details>
+    </section>
+
     <section class="wrap final-cta">
       <div class="cta-card">
         <h2>Ready to get a little lost?</h2>
-        <p>Paper Maze is heading to Android. Send us a note to hear when the starting line opens.</p>
-        <a class="button" href="mailto:papermazeapp@gmail.com">papermazeapp@gmail.com</a>
+        <p>Find your way. Beat your friends. Come back for another page.</p>
+        <a class="button button-primary" href="https://apps.apple.com/app/id6796745132">Download on the App Store ↗</a>
+        <p style="margin: 24px 0 0; font-size: 15px;">For Android availability and support, <a href="support.html">get in touch</a>.</p>
       </div>
     </section>
   </main>
